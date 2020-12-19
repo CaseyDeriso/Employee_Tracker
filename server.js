@@ -57,8 +57,9 @@ const chooser = (data) => {
   cont = false;
   break;
 }
-if (cont) {
-  prompt()
+if (!cont) {
+  console.log('Bye Bye!')
+  process.exit(0)
 }
 }
 
@@ -71,7 +72,10 @@ const addDepartment = () => {
 
 const getRoles = () => {
   connection.query(
-    `SELECT * FROM job_roles`, (err, rows) => {
+    `SELECT job_roles.id, job_roles.role, job_roles.salary, departments.name
+     FROM job_roles
+     LEFT JOIN departments
+     ON job_roles.department_id = departments.id`, (err, rows) => {
     if (err) throw err;
     console.table(rows);
   })
@@ -100,6 +104,6 @@ const getEmployees = () => {
   });
 };
 
-const init = new Promise(afterConnection).then(prompt).then(chooser);
+new Promise(afterConnection).then(prompt).then(chooser);
 
  
