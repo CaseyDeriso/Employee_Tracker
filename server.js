@@ -31,12 +31,16 @@ afterConnection = (res, rej) => {
 };
 
 const chooser = (data) => {
+  let cont = true;
   switch (data.functions) {
   case 'View all employees':
     getEmployees()
     break;
   case 'View all departments':
     getDepartments();
+    break;
+  case 'View all roles':
+    getRoles();
     break;
   case 'Add a department':
     addDepartment();
@@ -49,6 +53,12 @@ const chooser = (data) => {
     break;
   case 'Update an empoyee role':
     break;
+  case 'Quit':
+  cont = false;
+  break;
+}
+if (cont) {
+  prompt()
 }
 }
 
@@ -59,15 +69,32 @@ const addDepartment = () => {
   })
 }
 
+const getRoles = () => {
+  connection.query(
+    `SELECT * FROM job_roles`, (err, rows) => {
+    if (err) throw err;
+    console.table(rows);
+  })
+}
+
 const getDepartments = () => {
-  connection.query("SELECT * FROM job_roles", (err, rows) => {
+  connection.query("SELECT * FROM departments", (err, rows) => {
     if (err) throw err;
     console.table(rows);
   })
 }
 
 const getEmployees = () => {
-  connection.query("SELECT * FROM employees", (err, rows) => {
+  connection.query(
+    `SELECT employees.id, employees.first_name, employees.last_name, 
+    job_roles.role, job_roles.salary,
+    managers.first_name AS manager_first, managers.last_name AS manager_last 
+    FROM employees
+    LEFT JOIN job_roles
+    ON employees.title_id = job_roles.id
+    LEFT JOIN managers
+    ON employees.manager_id = managers.id`
+    , (err, rows) => {
     if (err) throw err;
     console.table(rows);
   });
@@ -75,3 +102,4 @@ const getEmployees = () => {
 
 const init = new Promise(afterConnection).then(prompt).then(chooser);
 
+ 
