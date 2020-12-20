@@ -12,6 +12,7 @@ employee tracker is a command line interface application for businesses to track
 * [usage](#usage)
 * [screenshot](#screenshot)
 * [credits](#credits)
+* [tutorial] (#tutorial)
 
 
 ## Installation 
@@ -30,6 +31,8 @@ Once the project is installed and ready. Create a new databse for your business 
 
 This project was developed as part of the UT full stack developer bootcamp.
 
-## License 
+## Tutorial
+
+![Link to Tutorial Video](https://youtu.be/HuLpQYHPK28)
 
 
