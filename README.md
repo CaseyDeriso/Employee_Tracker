@@ -12,7 +12,7 @@ employee tracker is a command line interface application for businesses to track
 * [usage](#usage)
 * [screenshot](#screenshot)
 * [credits](#credits)
-* [tutorial] (#tutorial)
+* [tutorial](#tutorial)
 
 
 ## Installation 
