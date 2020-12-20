@@ -33,6 +33,6 @@ This project was developed as part of the UT full stack developer bootcamp.
 
 ## Tutorial
 
-![Link to Tutorial Video](https://youtu.be/HuLpQYHPK28)
+[Link to Tutorial Video](https://youtu.be/HuLpQYHPK28)
 
 
