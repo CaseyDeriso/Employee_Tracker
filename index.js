@@ -7,6 +7,7 @@ let departmentsArr = [];
 let managersArr = [];
 let rolesArr = [];
 let employeesArr = [];
+let business = 'Employee Tracker'
 
 // create connection to databse
 const connection = mysql.createConnection({
@@ -15,7 +16,8 @@ const connection = mysql.createConnection({
   // your MySQL username
   user: "root",
   // your MySQL password
-  password: "g@tewayGT5656",
+  password: "",
+  // your MySQL database (business is default name in schema.sql)
   database: "business",
 });
 
@@ -27,7 +29,7 @@ connection.connect((err) => {
 afterConnection = (res, rej) => {
   queryArrays();
 
-  figlet("AUDI SOUTH AUSTIN", function (err, data) {
+  figlet(`${business}`, function (err, data) {
     if (err) {
       rej("something went wrong...");
     }
