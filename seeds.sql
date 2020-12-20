@@ -14,6 +14,6 @@ VALUES ("Used Car Sales", 4, 100000), ("New Car Sales", 4, 100000),
 ("Technician's Apprentice", 1, 1000000);
 
 INSERT INTO employees (first_name, last_name, title_id, manager_id)
-VALUES ("Casey", "Deriso", 6, 1), ("Steve", "Berczik", 2, 3), 
+VALUES ("Casey", "Deriso", 6, 1), ("Steve", "Berczik", 3, 3), 
 ("Brian", "Ebnet", 3, 7), ("Gerovanny", "Ventura", 1, 6),
-("John", "Bowyer", 2, 5);
+("John", "Bowyer", 2, 5), ("Davey", "Jones", 3, 3);
