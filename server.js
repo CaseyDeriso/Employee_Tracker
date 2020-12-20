@@ -2,12 +2,11 @@ const mysql = require("mysql2");
 const figlet = require("figlet");
 const cTable = require("console.table");
 const inquirer = require("inquirer");
-const { resolve } = require("path");
-const { truncate } = require("fs");
 
 let departmentsArr = [];
 let managersArr = [];
 let rolesArr = [];
+let employeesArr = [];
 
 // create connection to databse
 const connection = mysql.createConnection({
@@ -58,7 +57,8 @@ const chooser = (data) => {
     case "Add an employee":
       addEmployee(data);
       break;
-    case "Update an empoyee role":
+    case "Update an employee role":
+      updateEmployee(data)
       break;
     case "Quit":
       cont = false;
@@ -67,6 +67,24 @@ const chooser = (data) => {
   if (!cont) {
     console.log("Bye Bye!");
     process.exit(0);
+  } else {
+    setTimeout(()=> {
+    inquirer.prompt([
+      {
+        type: "confirm",
+        name: "continue",
+        message: "Would you like to continue?",
+        default: true
+      }
+    ])
+    .then(answer => {
+      if (answer.continue == true) {
+        return init()
+      } else {
+        console.log("Bye Bye!");
+        process.exit(0)
+      }
+    })}, 1000);
   }
 };
 
@@ -89,7 +107,21 @@ const queryArrays = () => {
       departmentsArr.push(el.name);
     });
   });
+  connection.query(`SELECT first_name, last_name FROM employees`, (err, rows) => {
+    if(err) throw err;
+    rows.map((el) => {
+      employeesArr.push(`${el.first_name} ${el.last_name}`)
+    })
+  })
 };
+
+const updateEmployee = (data) => {
+  employeeId = employeesArr.indexOf(data.employee) +1;
+  roleId = rolesArr.indexOf(data.new_role) + 1;
+  connection.query(`UPDATE employees SET title_id = ? WHERE employees.id = ?`, [roleId, employeeId], (err, rows) => {
+    console.table(rows)
+  })
+}
 
 const addEmployee = (data) => {
   let roleId = rolesArr.indexOf(data.role) + 1;
@@ -188,7 +220,6 @@ const prompt = () => {
         name: "name",
         message: "Please input the name of the new role",
         when: function (data) {
-          console.log(data);
           if (data.functions == "Add a role") {
             return true;
           } else {
@@ -283,11 +314,41 @@ const prompt = () => {
           }
         },
       },
+      {
+        type: "list",
+        name: "employee",
+        message: "Choose employee to update",
+        choices: employeesArr,
+        when: function (data) {
+          if (data.functions == "Update an employee role") {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "list",
+        name: "new_role",
+        message: "Choose employee's new role",
+        choices: rolesArr,
+        when: function (data) {
+          if (data.functions == "Update an employee role") {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
     ])
     .then((answers) => chooser(answers))
     .catch((err) => console.log(err));
 };
 
-new Promise(afterConnection).then(prompt).catch((error) => {
-  console.log(error);
-});
+let init = () => {
+  new Promise(afterConnection).then(prompt).catch((error) => {
+    console.log(error);
+  });
+};
+
+init();
